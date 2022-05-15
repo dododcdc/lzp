@@ -1,0 +1,100 @@
+package com.wb.lzp.service;
+
+import com.ejlchina.data.Array;
+import com.ejlchina.data.Mapper;
+import com.ejlchina.okhttps.HTTP;
+import com.ejlchina.okhttps.gson.GsonMsgConvertor;
+import org.springframework.stereotype.Service;
+
+
+// 后续配置调度 每开始一次新调度时要初始化 URL isFirst
+@Service
+public class ReptileServiceImpl implements ReptileService {
+    private final String baseUrl = "https://m.weibo.cn/";
+
+    private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
+    private String urlRes = "";
+    private final HTTP http = getHttp(baseUrl);
+
+    private boolean isFirst = true;
+//    private ArrayList<String> list = new ArrayList<>();
+
+    @Override
+    public void start(String sinceId) {
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (this.isFirst) {
+            this.urlRes = this.urlFirst ;
+            this.isFirst = false;
+        }
+        else {
+            this.urlRes = this.urlFirst + "&since_id=" + sinceId;
+        }
+
+        Mapper m1 = this.http.sync(urlRes)
+                .get()
+                .getBody()
+                .toMapper();
+        // 爬到所有数据后返回
+        if("0".equals(m1.getString("ok"))) {
+            return ;
+        }
+        Mapper m2 = m1.getMapper("data");
+        Array cards = m2.getArray("cards");
+        sinceId = m2.getMapper("cardlistInfo").getString("since_id");
+
+        for (int i = 0; i < cards.size(); i++) {
+            Mapper m3 = cards.getMapper(i);
+            Mapper m4 = m3.getMapper("mblog");
+            String id = m4.getString("id");
+            String mid = m4.getString("mid");
+            String created_at = m4.getString("created_at");
+
+            // todo 通过id去访问评论 拿到评论的内容写入数据库
+            // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过
+            // todo 获取到所有评论后记得结束
+
+//            list.add(id + "," + mid );
+            System.out.println(id + "," + mid);
+        }
+
+        start(sinceId);
+        System.out.println("good");
+
+    }
+
+
+
+    private HTTP getHttp(String baseUrl) {
+        return HTTP.builder()
+                .baseUrl(baseUrl)
+                .addMsgConvertor(new GsonMsgConvertor())
+                .build();
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public String getResUrl() {
+        return resUrl;
+    }
+
+    public void setResUrl(String resUrl) {
+        this.resUrl = resUrl;
+    }
+
+    public boolean isFirst() {
+        return isFirst;
+    }
+
+    public void setFirst(boolean first) {
+        isFirst = first;
+    }
+
+}
