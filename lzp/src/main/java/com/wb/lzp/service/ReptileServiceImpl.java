@@ -7,7 +7,7 @@ import com.ejlchina.okhttps.gson.GsonMsgConvertor;
 import org.springframework.stereotype.Service;
 
 
-// 后续配置调度 每开始一次新调度时要初始化 URL isFirst
+// 后续配置调度 每开始一次新调度时要初始化 urlRes
 @Service
 public class ReptileServiceImpl implements ReptileService {
     private final String baseUrl = "https://m.weibo.cn/";
@@ -81,12 +81,12 @@ public class ReptileServiceImpl implements ReptileService {
         return baseUrl;
     }
 
-    public String getResUrl() {
-        return resUrl;
+    public String getUrlRes() {
+        return urlRes;
     }
 
-    public void setResUrl(String resUrl) {
-        this.resUrl = resUrl;
+    public void setUrlRes(String urlRes) {
+        this.urlRes = urlRes;
     }
 
     public boolean isFirst() {
