@@ -1,2 +1,0 @@
-# lzp
-all of lzp
