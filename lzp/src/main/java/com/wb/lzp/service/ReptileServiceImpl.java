@@ -76,10 +76,12 @@ public class ReptileServiceImpl implements ReptileService {
 
 
     private HTTP getHttp(String baseUrl) {
-        return HTTP.builder()
+        HTTP http = HTTP.builder()
                 .baseUrl(baseUrl)
                 .addMsgConvertor(new GsonMsgConvertor())
                 .build();
+
+        return http;
     }
 
     public String getBaseUrl() {

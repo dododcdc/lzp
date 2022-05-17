@@ -7,3 +7,11 @@ export function get() {
         method:'get'
     })
 }
+
+
+export function demo1() {
+    return request({
+        url: "/demo1",
+        method:'get'
+    })
+}

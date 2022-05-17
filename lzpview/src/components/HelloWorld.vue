@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { get } from "@/api/demo";
+import { get,demo1 } from "@/api/demo";
 
 export default {
   name: 'HelloWorld',
@@ -44,9 +44,12 @@ export default {
 
   },
   created() {
-    get().then(res => {
-      console.log(res)
+    demo1().then(res => {
+      console.log("ok")
     })
+    // get().then(res => {
+    //   console.log(res)
+    // })
   }
 
 
