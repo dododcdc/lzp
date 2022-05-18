@@ -17,8 +17,10 @@ public class ReptileServiceImpl implements ReptileService {
     private String urlRes = "";
     private final HTTP http = getHttp(baseUrl);
 
+    // start方法 最大递归次数 防止 内存泄漏
+    private  int maxSt = 0;
+
     private boolean isFirst = true;
-//    private ArrayList<String> list = new ArrayList<>();
 
     @Override
     public void start(String sinceId) {
@@ -28,7 +30,6 @@ public class ReptileServiceImpl implements ReptileService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         if (this.isFirst) {
             this.urlRes = this.urlFirst ;
             this.isFirst = false;
@@ -52,15 +53,16 @@ public class ReptileServiceImpl implements ReptileService {
         for (int i = 0; i < cards.size(); i++) {
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
+            Mapper scheme = m3.getMapper("scheme");
             String id = m4.getString("id");
             String mid = m4.getString("mid");
             String created_at = m4.getString("created_at");
 
             // todo 通过id去访问评论 拿到评论的内容写入数据库
             String format = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=0", id, mid);
-            HttpResult.Body body = http.sync(format)
-                                        .get()
-                                        .getBody();
+            Mapper comments = http.sync(format)
+                    .get()
+                    .getBody().toMapper();
             // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过
             // todo 获取到所有评论后记得结束
 
@@ -68,7 +70,11 @@ public class ReptileServiceImpl implements ReptileService {
             System.out.println(id + "," + mid);
         }
 
-        start(sinceId);
+        if(maxSt<10000) {
+            start(sinceId);
+            maxSt++;
+        }
+        else return;
         System.out.println("good");
 
     }
