@@ -3,9 +3,16 @@ package com.wb.lzp.service;
 import com.ejlchina.data.Array;
 import com.ejlchina.data.Mapper;
 import com.ejlchina.okhttps.HTTP;
-import com.ejlchina.okhttps.HttpResult;
+
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
+import com.google.gson.reflect.TypeToken;
+import com.wb.lzp.bean.Comment;
+import com.wb.lzp.bean.DataComment;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 
 // 后续配置调度 每开始一次新调度时要初始化 urlRes
@@ -53,7 +60,7 @@ public class ReptileServiceImpl implements ReptileService {
         for (int i = 0; i < cards.size(); i++) {
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
-            Mapper scheme = m3.getMapper("scheme");
+            String scheme = m3.getString("scheme");
             String id = m4.getString("id");
             String mid = m4.getString("mid");
             String created_at = m4.getString("created_at");
@@ -63,7 +70,18 @@ public class ReptileServiceImpl implements ReptileService {
             Mapper comments = http.sync(format)
                     .get()
                     .getBody().toMapper();
+            Array array = comments.getMapper("data").getArray("data");
+
+
+
+
+            List<Comment> comments1 = array.toList(Comment.class);
+
+            String s = comments.toString();
+
+
             // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过
+
             // todo 获取到所有评论后记得结束
 
 //            list.add(id + "," + mid );
