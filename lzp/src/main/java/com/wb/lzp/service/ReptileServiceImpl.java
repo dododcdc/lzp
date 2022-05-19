@@ -2,16 +2,15 @@ package com.wb.lzp.service;
 
 import com.ejlchina.data.Array;
 import com.ejlchina.data.Mapper;
+import com.ejlchina.data.TypeRef;
 import com.ejlchina.okhttps.HTTP;
-
+import com.ejlchina.okhttps.OkHttps;
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
-import com.google.gson.reflect.TypeToken;
 import com.wb.lzp.bean.Comment;
-import com.wb.lzp.bean.DataComment;
+import com.wb.lzp.bean.Result;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -67,17 +66,34 @@ public class ReptileServiceImpl implements ReptileService {
 
             // todo 通过id去访问评论 拿到评论的内容写入数据库
             String format = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=0", id, mid);
-            Mapper comments = http.sync(format)
+//            Mapper comments = http.sync(format)
+//                    .get()
+//                    .getBody().toMapper();
+//            Mapper data = comments.getMapper("data");
+//            List<Comment> cts = data.getArray("data").toList(Comment.class);
+
+//            Result<List<Comment>> result = data.toBean(new TypeRef<Result<List<Comment>>>() {
+//                @Override
+//                public Type getType() {
+//                    return super.getType();
+//                }
+//            });
+            Result<List<Comment>> listResult = http.sync(format)
                     .get()
-                    .getBody().toMapper();
-            Array array = comments.getMapper("data").getArray("data");
+                    .getBody()
+                    .toBean(new TypeRef<Result<List<Comment>>>() {});
+
+//            Result<List<Comment>> result = http.sync(format)
+//                    .get()
+//                    .getBody()
+//                    .toBean(new TypeRef<Result<List<Comment>>>() {
+//                        @Override
+//                        public Type getType() {
+//                            return super.getType();
+//                        }
+//                    });
 
 
-
-
-            List<Comment> comments1 = array.toList(Comment.class);
-
-            String s = comments.toString();
 
 
             // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过
