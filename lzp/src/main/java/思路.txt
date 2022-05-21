@@ -37,6 +37,7 @@ hfp:
 
 该条评论的id
 该条评论的rootid(如果该条评论的id和rootid相同则是该条微博下的一级评论)
+评论内容
 该条评论的所有子评论id
 评论者id
 评论者名称screen_name

@@ -15,6 +15,8 @@ public class LzpData {
     private String cmId;
 //    该条评论的rootid(如果该条评论的id和rootid相同则是该条微博下的一级评论)
     private String cmRootId;
+//    评论内容
+    private String text;
 //    评论者id
     private String cmuId;
 //    评论者名称
