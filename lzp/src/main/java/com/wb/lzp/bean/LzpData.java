@@ -40,6 +40,12 @@ public class LzpData {
     private boolean isTf;
 //    评论者归属地
     private String source;
+//    评论的maxId
+    private String maxId;
+//    评论的maxIdType
+    private String maxIdType;
+//    评论来源接口地址
+    private String cmUrl;
 //    此条微博id
     private String wId;
 //    此条微博mid

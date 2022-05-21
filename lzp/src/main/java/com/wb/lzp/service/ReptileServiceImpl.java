@@ -39,7 +39,7 @@ public class ReptileServiceImpl implements ReptileService {
 
     @Override
     public void start(String sinceId) {
-        sleep(10000);
+        sleep(5000);
         if (this.isFirst) {
             this.urlRes = this.urlFirst;
             this.isFirst = false;
@@ -113,8 +113,7 @@ public class ReptileServiceImpl implements ReptileService {
             if (count != 0) {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
-
-            sleep(10000);
+            sleep(9000);
             log.info("获取每一批评论的url：{}",baseUrl+url);
             Mapper comments = http.sync(url)
                     .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
@@ -128,7 +127,7 @@ public class ReptileServiceImpl implements ReptileService {
             }
             // 对这一次拿到的评论做处理
             Array array = comments.getMapper("data").getArray("data");
-            sink(array, id, mid,wText, scheme, createdAt);
+            sink(array, id, mid,wText, scheme, createdAt,maxId,maxIdType,baseUrl+url);
 
             // 获取下一部分的评论
             maxId = comments.getMapper("data").getString("max_id");
@@ -145,7 +144,7 @@ public class ReptileServiceImpl implements ReptileService {
         }
     }
 
-    private void sink(Array array, String wId,String wText, String wMid, String wUrl, String wTime) {
+    private void sink(Array array, String wId,String wMid,String wText, String wUrl, String wTime,String maxId,String maxIdType,String cmUrl) {
 
         for (int i = 0; i < array.size(); i++) {
             // 拿到一个评论
@@ -174,6 +173,9 @@ public class ReptileServiceImpl implements ReptileService {
                     .profileUrl(mapper.getMapper("user").getString("profile_url"))
                     .isTf(isTf)
                     .source(source)
+                    .maxId(maxId)
+                    .maxIdType(maxIdType)
+                    .cmUrl(cmUrl)
                     .wId(wId)
                     .wMid(wMid)
                     .wText(wText)
@@ -197,7 +199,7 @@ public class ReptileServiceImpl implements ReptileService {
             Array arr = mapper.getArray("comments");
 
             if (!"false".equals(str) && arr != null && arr.size()>0) {
-                sink(mapper.getArray("comments"), wId, wMid,wText, wUrl, wTime);
+                sink(mapper.getArray("comments"), wId, wMid,wText, wUrl, wTime,maxId,maxIdType,cmUrl);
             }
         }
 
