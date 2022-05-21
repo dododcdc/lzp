@@ -139,7 +139,6 @@ public class ReptileServiceImpl implements ReptileService {
             maxId = comments.getMapper("data").getString("max_id");
             max = comments.getMapper("data").getInt("max");
             maxIdType = comments.getMapper("data").getString("max_id_type");
-            // 继续调用该函数
             ss(scheme,id,mid,createdAt,++count,maxId,max,maxIdType);
 
         }
