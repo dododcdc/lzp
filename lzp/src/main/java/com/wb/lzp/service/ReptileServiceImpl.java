@@ -2,20 +2,13 @@ package com.wb.lzp.service;
 
 import com.ejlchina.data.Array;
 import com.ejlchina.data.Mapper;
-import com.ejlchina.data.TypeRef;
 import com.ejlchina.okhttps.HTTP;
-import com.ejlchina.okhttps.OkHttps;
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
-import com.wb.lzp.bean.Comment;
 import com.wb.lzp.bean.LzpData;
-import com.wb.lzp.bean.Result;
 import com.wb.lzp.config.HttpConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 
@@ -27,9 +20,7 @@ public class ReptileServiceImpl implements ReptileService {
 
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
     private String urlRes = "";
-    private final HTTP http = getHttp(baseUrl);
-
-    private List<Map<String, String>> headers;
+    private HTTP http = getHttp(baseUrl);
 
 
     private boolean isFirst = true;
@@ -42,8 +33,7 @@ public class ReptileServiceImpl implements ReptileService {
 
     @Override
     public void start(String sinceId) {
-
-        sleep(1000);
+        sleep(10000);
         if (this.isFirst) {
             this.urlRes = this.urlFirst;
             this.isFirst = false;
@@ -62,9 +52,9 @@ public class ReptileServiceImpl implements ReptileService {
         }
         Mapper m2 = m1.getMapper("data");
         Array cards = m2.getArray("cards");
-        sinceId = m2.getMapper("cardlistInfo").getString("since_id");
 
-        for (int i = 0; i < cards.size(); i++) {
+
+        for (int i = 1; i < cards.size(); i++) {
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
             // 该条微博地址
@@ -72,44 +62,34 @@ public class ReptileServiceImpl implements ReptileService {
             String id = m4.getString("id");
             String mid = m4.getString("mid");
             String createdAt = m4.getString("created_at");
+            String wText = m4.getString("text");
 
-//            String cm = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=0", id, mid);
-//            Result<List<Comment>> result = OkHttps.sync(baseUrl+format).get().getBody()
-//                    .toBean(new TypeRef<Result<List<Comment>>>(){});
-//            https://m.weibo.cn/comments/hotflow?id=4771565386858781&mid=4771565386858781&max_id_type=0&max_id=138859827146766
-//            {
-//                "ok": 0
-//            }
-//            Mapper comments = http.sync(cm)
-//                    .get()
-//                    .getBody().toMapper();
-//            String ok = comments.getString("ok");
-//            String maxId = comments.getMapper("data").getString("max_id");
-//            int max = comments.getMapper("data").getInt("max");
-//            String maxIdType = comments.getMapper("data").getString("max_id_type");
+            log.info("第" + wNow + "条微博开始" );
+            log.info("微博内容是：" + wText );
 
-            // 获取该条微博下的第一部分一级评论，后续根据 maxId max maxIdType
-//            Array array = comments.getMapper("data").getArray("data");
-//            sink(array,id,mid,scheme,createdAt);
             //递归拿评论
-            getCm(scheme, id, mid, createdAt, 0, "", 1, "0");
+            getCm(scheme, id, mid,wText, createdAt, 0, "", 1, "0");
+            wNow++;
 
-//            list.add(id + "," + mid );
-            System.out.println(id + "," + mid);
         }
 
+        sinceId = m2.getMapper("cardlistInfo").getString("since_id");
         if (wNow < 10000) {
-            wNow++;
+
+
             start(sinceId);
 
         } else return;
         System.out.println("good");
-
     }
 
-
+    // todo bean 注入
     private HTTP getHttp(String baseUrl) {
         HTTP http = HTTP.builder()
+//                .config(b -> {
+//                    IP ip = HttpConfig.ips.get(new Random(3));
+//                    b.proxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("ip",8080)));
+//                })
                 .baseUrl(baseUrl)
                 .addMsgConvertor(new GsonMsgConvertor())
                 .build();
@@ -117,7 +97,7 @@ public class ReptileServiceImpl implements ReptileService {
         return http;
     }
 
-    private void getCm(String scheme, String id, String mid, String createdAt, int count, String maxId, int max, String maxIdType) {
+    private void getCm(String scheme, String id, String mid,String wText, String createdAt, int count, String maxId, int max, String maxIdType) {
         if (count < max) {
             String url = "";
             if (count == 0) {
@@ -128,7 +108,8 @@ public class ReptileServiceImpl implements ReptileService {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
 
-            sleep(1000);
+            sleep(10000);
+            log.info("获取每一批评论的url：{}",baseUrl+url);
             Mapper comments = http.sync(url)
                     .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                     .get()
@@ -141,24 +122,24 @@ public class ReptileServiceImpl implements ReptileService {
             }
             // 对这一次拿到的评论做处理
             Array array = comments.getMapper("data").getArray("data");
-            sink(array, id, mid, scheme, createdAt);
+            sink(array, id, mid,wText, scheme, createdAt);
 
             // 获取下一部分的评论
             maxId = comments.getMapper("data").getString("max_id");
             max = comments.getMapper("data").getInt("max");
             maxIdType = comments.getMapper("data").getString("max_id_type");
-
-            if (this.cmNow < 100000) {
-                cmNow++;
-                getCm(scheme, id, mid, createdAt, ++count, maxId, max, maxIdType);
+            if ("0".equals(maxId)){
+                return;
             }
 
+            if (this.cmNow < 1000000) {
+                cmNow++;
+                getCm(scheme, id, mid,wText, createdAt, ++count, maxId, max, maxIdType);
+            }
         }
-
     }
 
-
-    private void sink(Array array, String wId, String wMid, String wUrl, String wTime) {
+    private void sink(Array array, String wId,String wText, String wMid, String wUrl, String wTime) {
 
         for (int i = 0; i < array.size(); i++) {
             // 拿到一个评论
@@ -189,12 +170,14 @@ public class ReptileServiceImpl implements ReptileService {
                     .source(source)
                     .wId(wId)
                     .wMid(wMid)
+                    .wText(wText)
                     .wUrl(wUrl)
                     .cmTime(mapper.getString("created_at"))
                     .wTime(wTime)
                     .build();
 
-            // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过
+            // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过,因为在爬取时可能有人正在评论
+
             log.info(lzpData.toString());
             this.totalCm++;
 
@@ -205,9 +188,8 @@ public class ReptileServiceImpl implements ReptileService {
             Array arr = mapper.getArray("comments");
 
             if (!"false".equals(str) && arr != null && arr.size()>0) {
-                sink(mapper.getArray("comments"), wId, wMid, wUrl, wTime);
+                sink(mapper.getArray("comments"), wId, wMid,wText, wUrl, wTime);
             }
-
         }
 
     }

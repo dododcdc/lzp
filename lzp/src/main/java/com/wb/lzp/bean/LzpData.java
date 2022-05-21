@@ -37,6 +37,8 @@ public class LzpData {
     private String wId;
 //    此条微博mid
     private String wMid;
+//    微博内容
+    private String wText;
 //    此条微博的地址
     private String wUrl;
 
