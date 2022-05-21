@@ -5,11 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "lzp_data")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class LzpData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
 //    该条评论的id
     private String cmId;

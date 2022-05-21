@@ -7,8 +7,10 @@ import com.ejlchina.okhttps.gson.GsonMsgConvertor;
 import com.wb.lzp.bean.LzpData;
 import com.wb.lzp.config.HttpConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Random;
 
 
@@ -16,6 +18,10 @@ import java.util.Random;
 @Slf4j
 @Service
 public class ReptileServiceImpl implements ReptileService {
+
+    @Autowired
+    LzpDataRepository lzpDataRepository;
+
     private final String baseUrl = "https://m.weibo.cn/";
 
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
@@ -177,7 +183,10 @@ public class ReptileServiceImpl implements ReptileService {
                     .build();
 
             // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过,因为在爬取时可能有人正在评论
-
+            List<LzpData> lp = lzpDataRepository.findByCmId(lzpData.getCmId());
+            if (lp.size()<1) {
+                lzpDataRepository.save(lzpData);
+            }
             log.info(lzpData.toString());
             this.totalCm++;
 
