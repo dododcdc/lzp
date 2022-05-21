@@ -25,7 +25,7 @@ public class DemoController {
 
     @GetMapping("demo1")
     public String demo1() {
-        reptileService.start("1234");
+        reptileService.start("0");
         return "dddd";
     }
 

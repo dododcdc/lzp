@@ -23,11 +23,9 @@ public class ReptileServiceImpl implements ReptileService {
     LzpDataRepository lzpDataRepository;
 
     private final String baseUrl = "https://m.weibo.cn/";
-
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
     private String urlRes = "";
     private HTTP http = getHttp(baseUrl);
-
 
     private boolean isFirst = true;
 
@@ -39,13 +37,10 @@ public class ReptileServiceImpl implements ReptileService {
 
     @Override
     public void start(String sinceId) {
+
         sleep(5000);
-        if (this.isFirst) {
-            this.urlRes = this.urlFirst;
-            this.isFirst = false;
-        } else {
-            this.urlRes = this.urlFirst + "&since_id=" + sinceId;
-        }
+
+        this.urlRes = this.urlFirst + "&since_id=" + sinceId;
 
         Mapper m1 = this.http.sync(urlRes)
                 .get()
@@ -71,6 +66,7 @@ public class ReptileServiceImpl implements ReptileService {
             String wText = m4.getString("text");
 
             log.info("第" + wNow + "条微博开始" );
+            log.info("本次获取微博的接口地址为：" + this.baseUrl+this.urlRes);
             log.info("微博内容是：" + wText );
 
             //递归拿评论
@@ -89,7 +85,7 @@ public class ReptileServiceImpl implements ReptileService {
         System.out.println("good");
     }
 
-    // todo bean 注入
+    // todo bean 注入  配置超时重试机制
     private HTTP getHttp(String baseUrl) {
         HTTP http = HTTP.builder()
 //                .config(b -> {
@@ -114,7 +110,7 @@ public class ReptileServiceImpl implements ReptileService {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
             sleep(9000);
-            log.info("获取每一批评论的url：{}",baseUrl+url);
+            log.info("本次获取评论的url为：{}",baseUrl+url);
             Mapper comments = http.sync(url)
                     .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                     .get()
@@ -192,7 +188,7 @@ public class ReptileServiceImpl implements ReptileService {
             log.info(lzpData.toString());
             this.totalCm++;
 
-            log.info("当前在爬取第" + wNow + "条微博" + "第" + totalCm + "条评论");
+            log.info("当前在爬取第" + wNow+1 + "条微博" + "第" + totalCm+1 + "条评论");
             // 如果这个评论下面还有回复则继续调用本函数
 //            当前在爬取第0条微博第2058条评论 报空指针异常
             String str = mapper.getString("comments");

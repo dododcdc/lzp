@@ -59,5 +59,11 @@ hfp:
 com.google.gson.JsonSyntaxException: Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive
 原因是服务器开始返回非json数据
 
+// 归属地分析
+// 发送相同内容的人分析 ， 只有两人，且正好是一男一女
+// 被发送得最多得一条评论
+// 评论中男女比例
+
+
 
 
