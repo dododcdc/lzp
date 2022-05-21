@@ -9,10 +9,13 @@ import com.ejlchina.okhttps.gson.GsonMsgConvertor;
 import com.wb.lzp.bean.Comment;
 import com.wb.lzp.bean.LzpData;
 import com.wb.lzp.bean.Result;
+import com.wb.lzp.config.HttpConfig;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 
 // 后续配置调度 每开始一次新调度时要初始化 urlRes
@@ -23,6 +26,10 @@ public class ReptileServiceImpl implements ReptileService {
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
     private String urlRes = "";
     private final HTTP http = getHttp(baseUrl);
+
+    private List<Map<String,String>> headers ;
+
+
 
     // start方法 最大递归次数 防止 内存泄漏
     private  int maxSt = 0;
@@ -50,7 +57,8 @@ public class ReptileServiceImpl implements ReptileService {
                 .getBody()
                 .toMapper();
         // 爬到所有数据后返回
-        if("0".equals(m1.getString("ok"))) {
+        int ok = m1.getInt("ok");
+        if(ok!=1) {
             return ;
         }
         Mapper m2 = m1.getMapper("data");
@@ -85,7 +93,7 @@ public class ReptileServiceImpl implements ReptileService {
 //            Array array = comments.getMapper("data").getArray("data");
 //            sink(array,id,mid,scheme,createdAt);
             //递归拿评论
-            ss(scheme,id,mid,createdAt,0,"",1,"0");
+            getCm(scheme,id,mid,createdAt,0,"",1,"0");
 
 //            list.add(id + "," + mid );
             System.out.println(id + "," + mid);
@@ -111,7 +119,7 @@ public class ReptileServiceImpl implements ReptileService {
         return http;
     }
 
-    private void ss(String scheme,String id,String mid,String createdAt,int count,String maxId,int max,String maxIdType) {
+    private void getCm(String scheme,String id,String mid,String createdAt,int count,String maxId,int max,String maxIdType) {
         if (count<max) {
             String url = "";
             if (count == 0) {
@@ -122,7 +130,10 @@ public class ReptileServiceImpl implements ReptileService {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
 
+
+
             Mapper comments = http.sync(url)
+                    .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                     .get()
                     .getBody().toMapper();
 
@@ -133,13 +144,13 @@ public class ReptileServiceImpl implements ReptileService {
             }
             // 对这一次拿到的评论做处理
             Array array = comments.getMapper("data").getArray("data");
-            sink(array,id,mid,scheme,createdAt);
+//            sink(array,id,mid,scheme,createdAt);
 
             // 获取下一部分的评论
             maxId = comments.getMapper("data").getString("max_id");
             max = comments.getMapper("data").getInt("max");
             maxIdType = comments.getMapper("data").getString("max_id_type");
-            ss(scheme,id,mid,createdAt,++count,maxId,max,maxIdType);
+            getCm(scheme,id,mid,createdAt,++count,maxId,max,maxIdType);
 
         }
 
@@ -188,6 +199,14 @@ public class ReptileServiceImpl implements ReptileService {
 
         }
 
+    }
+
+    public void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getBaseUrl() {
