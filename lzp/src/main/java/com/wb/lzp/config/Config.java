@@ -15,6 +15,7 @@ public class Config {
 
     @Bean
     public HTTP http() {
+        // todo 配置超时重试机制
         return HTTP.builder().baseUrl(this.baseUrl)
                 .addMsgConvertor(new GsonMsgConvertor())
                 .build();

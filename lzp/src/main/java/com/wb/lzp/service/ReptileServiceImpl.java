@@ -85,7 +85,7 @@ public class ReptileServiceImpl implements ReptileService {
 
     }
 
-    // todo bean 注入  配置超时重试机制
+
     private HTTP getHttp(String baseUrl) {
         HTTP http = HTTP.builder()
 //                .config(b -> {
