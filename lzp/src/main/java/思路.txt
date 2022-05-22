@@ -4,9 +4,10 @@
 
 
 api1 https://m.weibo.cn/api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891
+经调试发现 参数保留q  type  value 就可以了
+api1 https://m.weibo.cn/api/container/getIndex?q=糊挤小鸡&type=uid&value=1573568291
 
 通过api1 返回的cards 拿到所有的 id mid
-
 
 api2 https://m.weibo.cn/comments/hotflow?id=4769148612380419&mid=4769148612380419&max_id_type=0
 id mid 拼接d到api2上访问  拿到所有评论

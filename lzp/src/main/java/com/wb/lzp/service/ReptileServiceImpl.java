@@ -57,7 +57,7 @@ public class ReptileServiceImpl implements ReptileService {
         Mapper m2 = m1.getMapper("data");
         Array cards = m2.getArray("cards");
 
-        for (int i = 1; i < cards.size(); i++) { // i等于1 第一条微博不爬取 (是置顶广告)
+        for (int i = 1; i < cards.size(); i++) { // i从1开始 第一条微博不爬取 (是置顶广告)
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
             // 该条微博地址
