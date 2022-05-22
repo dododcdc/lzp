@@ -28,20 +28,26 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+    <reg-nums></reg-nums>
   </div>
 </template>
 
 <script>
 import { get,demo1 } from "@/api/demo";
 
+import RegNums from "@/components/RegNums";
+
 export default {
   name: 'HelloWorld',
+  components: {RegNums},
   props: {
     msg: String
   },
 
   data() {
-
+    return {
+      a:100
+    }
   },
   created() {
     demo1().then(res => {
