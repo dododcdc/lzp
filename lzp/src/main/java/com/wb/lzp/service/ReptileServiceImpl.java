@@ -45,6 +45,7 @@ public class ReptileServiceImpl implements ReptileService {
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
 
         Mapper m1 = this.http.sync(urlRes)
+                .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                 .get()
                 .getBody()
                 .toMapper();
@@ -85,19 +86,6 @@ public class ReptileServiceImpl implements ReptileService {
 
     }
 
-
-    private HTTP getHttp(String baseUrl) {
-        HTTP http = HTTP.builder()
-//                .config(b -> {
-//                    IP ip = HttpConfig.ips.get(new Random(3));
-//                    b.proxy(new Proxy(Proxy.Type.HTTP,new InetSocketAddress("ip",8080)));
-//                })
-                .baseUrl(baseUrl)
-                .addMsgConvertor(new GsonMsgConvertor())
-                .build();
-
-        return http;
-    }
 
     private void getCm(String scheme, String id, String mid,String wText, String createdAt, int count, String maxId, int max, String maxIdType) {
         if (count < max) {
