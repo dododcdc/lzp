@@ -25,7 +25,9 @@ public class ReptileServiceImpl implements ReptileService {
     private final String baseUrl = "https://m.weibo.cn/";
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
     private String urlRes = "";
-    private HTTP http = getHttp(baseUrl);
+//    private HTTP http = getHttp(baseUrl);
+    @Autowired
+    private HTTP http ;
 
     private boolean isFirst = true;
 
@@ -54,8 +56,7 @@ public class ReptileServiceImpl implements ReptileService {
         Mapper m2 = m1.getMapper("data");
         Array cards = m2.getArray("cards");
 
-
-        for (int i = 1; i < cards.size(); i++) {
+        for (int i = 1; i < cards.size(); i++) { // i等于1 第一条微博不爬取 (是置顶广告)
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
             // 该条微博地址
@@ -72,17 +73,16 @@ public class ReptileServiceImpl implements ReptileService {
             //递归拿评论
             getCm(scheme, id, mid,wText, createdAt, 0, "", 1, "0");
             wNow++;
-
         }
 
         sinceId = m2.getMapper("cardlistInfo").getString("since_id");
         if (wNow < 10000) {
 
-
             start(sinceId);
-
         } else return;
+
         System.out.println("good");
+
     }
 
     // todo bean 注入  配置超时重试机制
@@ -110,7 +110,8 @@ public class ReptileServiceImpl implements ReptileService {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
             sleep(9000);
-            log.info("本次获取评论的url为：{}",baseUrl+url);
+            log.info("本次微博接口的url为：{}",this.baseUrl+this.urlRes);
+            log.info("本次获取评论的url为：{}",this.baseUrl+url);
             Mapper comments = http.sync(url)
                     .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                     .get()
@@ -188,14 +189,14 @@ public class ReptileServiceImpl implements ReptileService {
             log.info(lzpData.toString());
             this.totalCm++;
 
-            log.info("当前在爬取第" + wNow+1 + "条微博" + "第" + totalCm+1 + "条评论");
+            log.info("本次微博接口的url为：{}",this.baseUrl+this.urlRes);
+            log.info("当前在爬取第" + wNow + "条微博" + "第" + totalCm + "条评论");
             // 如果这个评论下面还有回复则继续调用本函数
-//            当前在爬取第0条微博第2058条评论 报空指针异常
             String str = mapper.getString("comments");
             Array arr = mapper.getArray("comments");
 
             if (!"false".equals(str) && arr != null && arr.size()>0) {
-                sink(mapper.getArray("comments"), wId, wMid,wText, wUrl, wTime,maxId,maxIdType,cmUrl);
+                sink(arr, wId, wMid,wText, wUrl, wTime,maxId,maxIdType,cmUrl);
             }
         }
 
