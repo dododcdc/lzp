@@ -15,7 +15,6 @@ public class Config {
 
     @Bean
     public HTTP http() {
-        System.out.println(this.baseUrl);
         return HTTP.builder().baseUrl(this.baseUrl)
                 .addMsgConvertor(new GsonMsgConvertor())
                 .build();
