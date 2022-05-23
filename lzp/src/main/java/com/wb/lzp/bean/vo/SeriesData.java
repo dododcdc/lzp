@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SeriesData {
     private String name;
-    private int value;
+    private String value;
 }
