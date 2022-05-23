@@ -40,7 +40,7 @@ public class ReptileServiceImpl implements ReptileService {
     @Override
     public void start(String sinceId) {
 
-        sleep(5000);
+        sleep();
 
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
 
@@ -60,6 +60,7 @@ public class ReptileServiceImpl implements ReptileService {
         for (int i = 1; i < cards.size(); i++) { // i从1开始 第一条微博不爬取 (是置顶广告)
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
+            if (m4 == null) continue;
             // 该条微博地址
             String scheme = m3.getString("scheme");
             String id = m4.getString("id");
@@ -82,7 +83,6 @@ public class ReptileServiceImpl implements ReptileService {
             start(sinceId);
         } else return;
 
-        System.out.println("good");
 
     }
 
@@ -97,7 +97,7 @@ public class ReptileServiceImpl implements ReptileService {
             if (count != 0) {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
-            sleep(9000);
+            sleep();
             log.info("本次微博接口的url为：{}",this.baseUrl+this.urlRes);
             log.info("本次获取评论的url为：{}",this.baseUrl+url);
             Mapper comments = http.sync(url)
@@ -106,6 +106,7 @@ public class ReptileServiceImpl implements ReptileService {
                     .getBody().toMapper();
 
             int ok = comments.getInt("ok");
+
             // 访问ok不等于1说明没评论了直接返回
             if (ok != 1) {
                 return;
@@ -190,12 +191,20 @@ public class ReptileServiceImpl implements ReptileService {
 
     }
 
-    public void sleep(int time) {
+    public void sleep() {
         try {
-            Thread.sleep(time);
+            Thread.sleep(getSleepTime());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getSleepTime() {
+        Random random = new Random();
+        int num = random.nextInt(15 - 5) + 5 + 1;
+        int i = Integer.parseInt(num + "000");
+        log.info("本次睡眠时间{}{}" , i,"秒");
+        return i;
     }
 
     public String getBaseUrl() {
