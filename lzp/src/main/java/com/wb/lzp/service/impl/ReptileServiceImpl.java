@@ -1,4 +1,4 @@
-package com.wb.lzp.service;
+package com.wb.lzp.service.impl;
 
 import com.ejlchina.data.Array;
 import com.ejlchina.data.Mapper;
@@ -6,6 +6,8 @@ import com.ejlchina.okhttps.HTTP;
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
 import com.wb.lzp.bean.LzpData;
 import com.wb.lzp.config.HttpConfig;
+import com.wb.lzp.service.LzpDataRepository;
+import com.wb.lzp.service.ReptileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,6 @@ public class ReptileServiceImpl implements ReptileService {
     private final String baseUrl = "https://m.weibo.cn/";
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
     private String urlRes = "";
-//    private HTTP http = getHttp(baseUrl);
     @Autowired
     private HTTP http ;
 
@@ -40,6 +41,7 @@ public class ReptileServiceImpl implements ReptileService {
     @Override
     public void start(String sinceId) {
 
+        // todo 睡眠时间改在拦截器中执行
         sleep();
 
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
@@ -170,7 +172,6 @@ public class ReptileServiceImpl implements ReptileService {
                     .wTime(wTime)
                     .build();
 
-            // todo 写入数据库前先根据该条评论的id判断这条评论是否已经爬取过,因为在爬取时可能有人正在评论
             List<LzpData> lp = lzpDataRepository.findByCmId(lzpData.getCmId());
             if (lp.size()<1) {
                 lzpDataRepository.save(lzpData);

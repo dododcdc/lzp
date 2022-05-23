@@ -59,7 +59,5 @@ public class LzpData {
     private String cmTime;
 //    此条评论所属微博的发博时间
     private String wTime;
-
-
 }
 
