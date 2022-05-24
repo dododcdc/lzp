@@ -16,9 +16,6 @@ public class AnalysisServiceImpl implements AnalysisService {
     JdbcTemplate jdbcTemplate;
     @Override
     public List<SeriesData> regNums() {
-//        String sql1 = "SELECT * FROM `u_user_img` WHERE ID = ?";
-//        BeanPropertyRowMapper<UUserImgEntity> rowMapper = new BeanPropertyRowMapper<>(UUserImgEntity.class);
-//        List<UUserImgEntity> uiList = f2fJdbcTemplate.query(sql1, rowMapper, id);
 
         String sql = "select t1.source as name ,count(*) as value  from " +
                 "( \n" +

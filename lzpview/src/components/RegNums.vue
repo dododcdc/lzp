@@ -16,8 +16,6 @@ export default {
     return {
       a:"good",
 
-
-
     }
   },
   // 在模板渲染成html后调用

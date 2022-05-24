@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -30,7 +28,6 @@ public class LzpController {
         List<SeriesData> data = analysisService.together();
 
         return data;
-
     }
 
     /**
@@ -40,6 +37,13 @@ public class LzpController {
     @GetMapping("reg-nums")
     public List<SeriesData> regNums() {
         List<SeriesData> data = analysisService.regNums();
+        return data;
+    }
+
+    @GetMapping("tf-nums")
+    public List<SeriesData> tfNums() {
+
+        List<SeriesData> data = analysisService.tfNums();
         return data;
     }
 
