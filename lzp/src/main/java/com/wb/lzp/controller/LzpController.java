@@ -20,22 +20,27 @@ public class LzpController {
     @Autowired
     public AnalysisService analysisService;
 
+    /**
+     * 同一地区只有两人且为一男一女
+     * @return
+     */
     @GetMapping("together")
     public List<SeriesData> together() {
 
         List<SeriesData> data = analysisService.together();
 
-        List<SeriesData> collect = data.stream()
-                .map(x -> {
-                    SeriesData seriesData = new SeriesData();
-                    seriesData.setName(x.getName());
-                    seriesData.setValue("11");
-                    return seriesData;
-                }).collect(Collectors.toList());
+        return data;
 
+    }
 
-        return collect;
-
+    /**
+     * 地区人数统计
+     * @return
+     */
+    @GetMapping("reg-nums")
+    public List<SeriesData> regNums() {
+        List<SeriesData> data = analysisService.regNums();
+        return data;
     }
 
 
