@@ -3,6 +3,8 @@
 <!--    <router-link to="/">Home</router-link> |-->
 <!--    <router-link to="/about">About</router-link>-->
 <!--  </div>-->
+  <!-- autoplay 自动播放 -->
+  <!-- loop 循环播放 -->
   <router-view/>
 </template>
 
