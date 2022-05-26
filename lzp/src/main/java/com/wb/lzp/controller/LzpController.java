@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -40,11 +41,40 @@ public class LzpController {
         return data;
     }
 
+    /**
+     * 铁粉非铁粉评论数量分析
+     * @return
+     */
     @GetMapping("tf-nums")
     public List<SeriesData> tfNums() {
 
         List<SeriesData> data = analysisService.tfNums();
         return data;
+    }
+
+    /**
+     * 男女比例统计
+     * @return
+     */
+    @GetMapping("fm-proportion")
+    public List<SeriesData> fmProportion() {
+
+        List<SeriesData> data = analysisService.fmProportion();
+        return data;
+
+    }
+
+    @GetMapping("getPeriod")
+    public List<String> getPeriod() {
+        try {
+            List<String> period = analysisService.getPeriod();
+            return period;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
 

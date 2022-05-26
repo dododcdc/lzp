@@ -2,6 +2,7 @@ package com.wb.lzp.service;
 
 import com.wb.lzp.bean.vo.SeriesData;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public interface AnalysisService {
@@ -30,6 +31,18 @@ public interface AnalysisService {
      * @return
      */
     List<SeriesData> together();
+
+    /**
+     * 男女人数比例分析
+     * @return
+     */
+    List<SeriesData> fmProportion();
+
+    /**
+     * 获取统计周期
+     * @return
+     */
+    List<String> getPeriod() throws Exception;
 
 
 }

@@ -7,7 +7,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
@@ -47,7 +51,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public List<SeriesData> together() {
-        String sql = "SELECT  SOURCE AS NAME,GROUP_CONCAT(DISTINCT SCREEN_NAME SEPARATOR ',') AS VALUE FROM LZP_DATA A WHERE \n" +
+        String sql = "SELECT  SOURCE AS NAME,GROUP_CONCAT(DISTINCT concat(SCREEN_NAME,'332067',profile_url) SEPARATOR '||') AS VALUE FROM LZP_DATA A WHERE \n" +
                 "SOURCE IN (\n" +
                 "SELECT SOURCE FROM ( \n" +
                 "SELECT SOURCE,CMU_ID FROM LZP_DATA GROUP BY SOURCE,CMU_ID ) A GROUP BY SOURCE HAVING COUNT(*) = 2 \n" +
@@ -55,6 +59,45 @@ public class AnalysisServiceImpl implements AnalysisService {
         List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
 
         return data;
+    }
+
+    @Override
+    public List<SeriesData> fmProportion() {
+        String sql = "select '男' as name,convert(sum(case when gender='m' then 1 else 0 end )/count(*),char) as value\n" +
+                "      from (\n" +
+                "select distinct cmu_id,gender from lzp_data ) a\n" +
+                "union\n" +
+                "select '女',convert(sum(case when gender='f' then 1 else 0 end )/count(*),char) as mp\n" +
+                "from (\n" +
+                "         select distinct cmu_id,gender from lzp_data ) a";
+
+        List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
+        return data;
+    }
+
+    @Override
+    public List<String> getPeriod() throws Exception {
+
+        String sql = "select cm_time from lzp_data";
+        List<String> period = jdbcTemplate.queryForList(sql,String.class);
+        List<String> collect = period.stream().map(x -> {
+            // Tue May 24 02:19:20 +0800 2022
+            String s = x.replaceAll("\\+0800", "GMT+08:00");
+            // Tue May 24 02:19:20 GMT+08:00 2022
+            SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.US);
+            Date date = null;
+            try {
+                date = sdf.parse(s);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            return sdf1.format(date);
+        }).collect(Collectors.toList());
+        String max = Collections.max(collect);
+        String min = Collections.min(collect);
+        return Arrays.asList(min,max);
     }
 
 }

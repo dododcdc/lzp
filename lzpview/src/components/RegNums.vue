@@ -33,6 +33,15 @@ export default {
       regNums().then(res => {
 
         var option = {
+          title: {
+            text: '评论区人员分布统计',
+            // subtext: '基于45709条评论',
+            // subtextStyle:{color:'#0000FF'},
+            left: 'center',
+            textStyle: {
+              color:'#ff2052'
+            }
+          },
           tooltip: {},
           series: [ {
             type: 'wordCloud',
@@ -46,9 +55,9 @@ export default {
             textStyle: {
               color: function () {
                 return 'rgb(' + [
-                  Math.round(Math.random() * 160),
-                  Math.round(Math.random() * 160),
-                  Math.round(Math.random() * 160)
+                  Math.round(Math.random() * 140),
+                  Math.round(Math.random() * 140),
+                  Math.round(Math.random() * 140)
                 ].join(',') + ')';
               }
             },
@@ -75,9 +84,9 @@ export default {
 
 <style scoped>
 html, body, #main {
-  width: 1000px;
+  width: 900px;
   height: 500px;
   margin: 0;
-  border: 1px solid red;
+
 }
 </style>
