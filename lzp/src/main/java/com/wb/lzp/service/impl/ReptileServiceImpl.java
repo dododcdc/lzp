@@ -176,8 +176,8 @@ public class ReptileServiceImpl implements ReptileService {
                     .wId(wId)
                     .wMid(wMid)
                     .wText(wText)
-                    .wUrl(wUrl) // 不准，相对评论要准一些，微博发布不会那么频繁，不会那么快变到另一个接口去了，程序挂了根据这个的since_id 恢复继续爬
-                    .wApiUrl(this.baseUrl+this.urlRes)
+                    .wUrl(wUrl)
+                    .wApiUrl(this.baseUrl+this.urlRes) // 不准，相对评论要准一些，微博发布不会那么频繁，不会那么快变到另一个接口去了，程序挂了根据这个的since_id 恢复继续爬
                     .cmTime(mapper.getString("created_at"))
                     .wTime(wTime)
                     .build();
