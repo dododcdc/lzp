@@ -1,2 +1,2 @@
 # lzp
-all of lzp
+comments of lzp
