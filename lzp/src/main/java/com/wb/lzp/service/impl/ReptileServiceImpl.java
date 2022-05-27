@@ -42,7 +42,7 @@ public class ReptileServiceImpl implements ReptileService {
     public void start(String sinceId) {
 
         // todo 睡眠时间改在拦截器中执行
-        sleep();
+
 
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
 
@@ -69,7 +69,7 @@ public class ReptileServiceImpl implements ReptileService {
             String mid = m4.getString("mid");
             String createdAt = m4.getString("created_at");
             String wText = m4.getString("text");
-
+            sleep();
             log.info("第" + wNow + "条微博开始");
             log.info("本次获取微博的接口地址为：" + this.baseUrl + this.urlRes);
             log.info("微博内容是：" + wText);
@@ -187,6 +187,8 @@ public class ReptileServiceImpl implements ReptileService {
                 log.info(lzpData.toString());
                 lzpDataRepository.save(lzpData);
                 this.totalCm++;
+            }else{
+                log.info("该条评论{}已经获取过",lp.get(0).getCmId());
             }
 
 
