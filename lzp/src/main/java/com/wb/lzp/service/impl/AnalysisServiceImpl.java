@@ -2,6 +2,7 @@ package com.wb.lzp.service.impl;
 
 import com.wb.lzp.bean.vo.SeriesData;
 import com.wb.lzp.service.AnalysisService;
+import com.wb.lzp.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -80,21 +81,7 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         String sql = "select cm_time from lzp_data";
         List<String> period = jdbcTemplate.queryForList(sql,String.class);
-        List<String> collect = period.stream().map(x -> {
-            // Tue May 24 02:19:20 +0800 2022
-            String s = x.replaceAll("\\+0800", "GMT+08:00");
-            // Tue May 24 02:19:20 GMT+08:00 2022
-            SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.US);
-            Date date = null;
-            try {
-                date = sdf.parse(s);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-            return sdf1.format(date);
-        }).collect(Collectors.toList());
+        List<String> collect = period.stream().map(TimeUtil::formate).collect(Collectors.toList());
         String max = Collections.max(collect);
         String min = Collections.min(collect);
         return Arrays.asList(min,max);
