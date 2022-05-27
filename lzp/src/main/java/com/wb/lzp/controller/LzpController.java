@@ -64,6 +64,21 @@ public class LzpController {
 
     }
 
+    /**
+     * 获取贡献评论最多的前十人
+     * @return
+     */
+    @GetMapping("cm-top")
+    public List<SeriesData> cmTop() {
+        List<SeriesData> data = analysisService.cmTop();
+        return data;
+    }
+
+
+    /**
+     * 获取统计周期
+     * @return
+     */
     @GetMapping("getPeriod")
     public List<String> getPeriod() {
         try {

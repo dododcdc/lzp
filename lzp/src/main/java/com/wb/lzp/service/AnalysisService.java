@@ -44,5 +44,11 @@ public interface AnalysisService {
      */
     List<String> getPeriod() throws Exception;
 
+    /**
+     * 评论数前十统计
+     * @return
+     */
+    List<SeriesData> cmTop() ;
+
 
 }

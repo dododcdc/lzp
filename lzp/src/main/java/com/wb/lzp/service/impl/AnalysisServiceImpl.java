@@ -87,4 +87,14 @@ public class AnalysisServiceImpl implements AnalysisService {
         return Arrays.asList(min,max);
     }
 
+    @Override
+    public List<SeriesData> cmTop() {
+
+        String sql = "select screen_name as name ,count(1) as value from lzp_data group by screen_name order by count(1) desc";
+
+        List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
+
+        return data;
+    }
+
 }
