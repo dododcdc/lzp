@@ -98,6 +98,7 @@ import FmProportion from "@/components/FmProportion";
 import Together from "@/components/Together";
 
 import {getPeriod} from "@/api/analysis";
+import { get,demo1 } from "@/api/demo";
 
 export default {
   name: "Analysis",
@@ -112,6 +113,10 @@ export default {
     }
   },
   created() {
+
+    demo1().then(res => {
+      console.log("ok")
+    })
 
     getPeriod().then(res => {
       this.min = res.data[0]
