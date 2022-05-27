@@ -181,16 +181,18 @@ public class ReptileServiceImpl implements ReptileService {
                     .cmTime(mapper.getString("created_at"))
                     .wTime(wTime)
                     .build();
-
+//          根据评论id判断该条数据是否已经爬取过
             List<LzpData> lp = lzpDataRepository.findByCmId(lzpData.getCmId());
             if (lp.size() < 1) {
+                log.info(lzpData.toString());
                 lzpDataRepository.save(lzpData);
+                this.totalCm++;
             }
-            log.info(lzpData.toString());
-            this.totalCm++;
+
 
             log.info("本次微博接口的url为：{}", this.baseUrl + this.urlRes);
             log.info("当前在爬取第" + wNow + "条微博" + "第" + totalCm + "条评论");
+
             // 如果这个评论下面还有回复则继续调用本函数
             String str = mapper.getString("comments");
             Array arr = mapper.getArray("comments");
