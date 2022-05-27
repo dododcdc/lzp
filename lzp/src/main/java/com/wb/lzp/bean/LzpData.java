@@ -32,6 +32,8 @@ public class LzpData {
     private String gender;
 //    评论者简介
     private String description;
+    //头像
+    private String avatar;
 //    评论者粉丝数量
     private String followersCount;
 //    评论者主页地址profile_url
@@ -54,7 +56,8 @@ public class LzpData {
     private String wText;
 //    此条微博的地址
     private String wUrl;
-
+//    此条评论属于的微博接口调用地址
+    private String wApiUrl;
 //    评论时间
     private String cmTime;
 //    此条评论所属微博的发博时间

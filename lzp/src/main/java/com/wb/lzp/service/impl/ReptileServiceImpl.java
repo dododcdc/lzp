@@ -28,7 +28,7 @@ public class ReptileServiceImpl implements ReptileService {
     private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
     private String urlRes = "";
     @Autowired
-    private HTTP http ;
+    private HTTP http;
 
     private boolean isFirst = true;
 
@@ -70,12 +70,12 @@ public class ReptileServiceImpl implements ReptileService {
             String createdAt = m4.getString("created_at");
             String wText = m4.getString("text");
 
-            log.info("第" + wNow + "条微博开始" );
-            log.info("本次获取微博的接口地址为：" + this.baseUrl+this.urlRes);
-            log.info("微博内容是：" + wText );
+            log.info("第" + wNow + "条微博开始");
+            log.info("本次获取微博的接口地址为：" + this.baseUrl + this.urlRes);
+            log.info("微博内容是：" + wText);
 
             //递归拿评论
-            getCm(scheme, id, mid,wText, createdAt, 0, "", 1, "0");
+            getCm(scheme, id, mid, wText, createdAt, 0, "", 1, "0");
             wNow++;
         }
 
@@ -89,7 +89,7 @@ public class ReptileServiceImpl implements ReptileService {
     }
 
 
-    private void getCm(String scheme, String id, String mid,String wText, String createdAt, int count, String maxId, int max, String maxIdType) {
+    private void getCm(String scheme, String id, String mid, String wText, String createdAt, int count, String maxId, int max, String maxIdType) {
         if (count < max) {
             String url = "";
             if (count == 0) {
@@ -100,8 +100,8 @@ public class ReptileServiceImpl implements ReptileService {
                 url = String.format("comments/hotflow?id=%s&mid=%s&max_id_type=%s&max_id=%s", id, mid, maxIdType, maxId);
             }
             sleep();
-            log.info("本次微博接口的url为：{}",this.baseUrl+this.urlRes);
-            log.info("本次获取评论的url为：{}",this.baseUrl+url);
+            log.info("本次微博接口的url为：{}", this.baseUrl + this.urlRes);
+            log.info("本次获取评论的url为：{}", this.baseUrl + url);
             Mapper comments = http.sync(url)
                     .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                     .get()
@@ -115,24 +115,32 @@ public class ReptileServiceImpl implements ReptileService {
             }
             // 对这一次拿到的评论做处理
             Array array = comments.getMapper("data").getArray("data");
-            sink(array, id, mid,wText, scheme, createdAt,maxId,maxIdType,baseUrl+url);
+            sink(array, id, mid, wText, scheme, createdAt, maxId, maxIdType,url);
 
             // 获取下一部分的评论
             maxId = comments.getMapper("data").getString("max_id");
             max = comments.getMapper("data").getInt("max");
             maxIdType = comments.getMapper("data").getString("max_id_type");
-            if ("0".equals(maxId)){
+            if ("0".equals(maxId)) {
                 return;
             }
 
             if (this.cmNow < 1000000) {
                 cmNow++;
-                getCm(scheme, id, mid,wText, createdAt, ++count, maxId, max, maxIdType);
+                getCm(scheme, id, mid, wText, createdAt, ++count, maxId, max, maxIdType);
             }
         }
     }
 
-    private void sink(Array array, String wId,String wMid,String wText, String wUrl, String wTime,String maxId,String maxIdType,String cmUrl) {
+    private void sink(Array array
+            , String wId
+            , String wMid
+            , String wText
+            , String wUrl
+            , String wTime
+            , String maxId
+            , String maxIdType
+            , String cmUrl) {
 
         for (int i = 0; i < array.size(); i++) {
             // 拿到一个评论
@@ -159,34 +167,36 @@ public class ReptileServiceImpl implements ReptileService {
                     .description(mapper.getMapper("user").getString("description"))
                     .followersCount(mapper.getMapper("user").getString("followers_count"))
                     .profileUrl(mapper.getMapper("user").getString("profile_url"))
+                    .avatar(mapper.getMapper("user").getString("avatar_hd"))
                     .isTf(isTf)
                     .source(source)
                     .maxId(maxId)
                     .maxIdType(maxIdType)
-                    .cmUrl(cmUrl)
+                    .cmUrl(cmUrl) // 不准，评论一直在变动
                     .wId(wId)
                     .wMid(wMid)
                     .wText(wText)
-                    .wUrl(wUrl)
+                    .wUrl(wUrl) // 不准，相对评论要准一些，微博发布不会那么频繁，不会那么快变到另一个接口去了，程序挂了根据这个的since_id 恢复继续爬
+                    .wApiUrl(this.baseUrl+this.urlRes)
                     .cmTime(mapper.getString("created_at"))
                     .wTime(wTime)
                     .build();
 
             List<LzpData> lp = lzpDataRepository.findByCmId(lzpData.getCmId());
-            if (lp.size()<1) {
+            if (lp.size() < 1) {
                 lzpDataRepository.save(lzpData);
             }
             log.info(lzpData.toString());
             this.totalCm++;
 
-            log.info("本次微博接口的url为：{}",this.baseUrl+this.urlRes);
+            log.info("本次微博接口的url为：{}", this.baseUrl + this.urlRes);
             log.info("当前在爬取第" + wNow + "条微博" + "第" + totalCm + "条评论");
             // 如果这个评论下面还有回复则继续调用本函数
             String str = mapper.getString("comments");
             Array arr = mapper.getArray("comments");
 
-            if (!"false".equals(str) && arr != null && arr.size()>0) {
-                sink(arr, wId, wMid,wText, wUrl, wTime,maxId,maxIdType,cmUrl);
+            if (!"false".equals(str) && arr != null && arr.size() > 0) {
+                sink(arr, wId, wMid, wText, wUrl, wTime, maxId, maxIdType, cmUrl);
             }
         }
 
@@ -204,7 +214,7 @@ public class ReptileServiceImpl implements ReptileService {
         Random random = new Random();
         int num = random.nextInt(15 - 5) + 5 + 1;
         int i = Integer.parseInt(num + "000");
-        log.info("本次睡眠时间{}{}" , i,"秒");
+        log.info("本次睡眠时间{}{}", i, "秒");
         return i;
     }
 
