@@ -1,7 +1,7 @@
 <template>
-<div >
+<div>
 
-  <el-button type="primary" @click="start()" >start</el-button>
+  <el-button type="primary" @click="start()" v-if="false">start</el-button>
 
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -9,9 +9,6 @@
       <h1>
         李壮平微博评论区分析研究中心
       </h1>
-
-
-
     </el-col>
 
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -156,12 +153,13 @@ export default {
 body{
   /*background: url("D:\\project\\mine\\lzp\\lzpview\\src\\assets\\bg.png") ;*/
   /*background: url("../assets/bg2.jpg") ;*/
-  background: url("../assets/bg.png") ;
+  /*background: url("../assets/bg.png") ;*/
+  background-color: bisque;
   background-position: center ;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color: #CCCCCC;
+
 
 }
 

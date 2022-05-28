@@ -28,20 +28,25 @@ export default {
 
         var option = {
           title: {
-            text: 'World Population'
+            text: '评论贡献统计'
           },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
               type: 'shadow'
+            },
+            textStyle:{
+              color:'deeppink'
             }
+
           },
           legend: {},
           grid: {
             left: '3%',
             right: '4%',
             bottom: '3%',
-            containLabel: true
+            containLabel: true,
+
           },
           xAxis: {
             type: 'value',
@@ -49,25 +54,31 @@ export default {
           },
           yAxis: {
             type: 'category',
-            data: ['Brazil', 'Indonesia', 'USA', 'India', 'China', 'World']
+            // data: ['Brazil', 'Indonesia', 'USA', 'India', 'China', 'World']
+            data: [],
+            axisLabel: {
+              show: true,
+              textStyle:{
+                color:'deeppink'
+              }
+            }
           },
           series: [
             {
-
               type: 'bar',
-              data: [18203, 23489, 29034, 104970, 131744, 630230]
+              // data: [18203, 23489, 29034, 104970, 131744, 630230]
+              data: []
             }
 
           ]
         };
 
-        // for(var i in res.data) {
-        //
-        //   console.log(res.data[i].name,res.data[i].value)
-        //   option.yAxis.data.push(res.data[i].name)
-        //   option.series[0].data.push(res.data[i].value)
-        //
-        // }
+        for(var i in res.data) {
+          console.log(res.data[i].name,res.data[i].value)
+          option.yAxis.data.push(res.data[i].name)
+          option.series[0].data.push(res.data[i].value)
+
+        }
         console.log(option)
         chart.setOption(option)
 

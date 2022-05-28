@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
@@ -94,7 +95,9 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
 
-        return data;
+        return data.stream()
+                .sorted(Comparator.comparingInt(x -> Integer.parseInt(x.getValue())))
+                .collect(Collectors.toList());
     }
 
 }
