@@ -1,6 +1,8 @@
 <template>
 <div >
 
+  <el-button type="primary" @click="start()" >start</el-button>
+
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
@@ -114,9 +116,7 @@ export default {
   },
   created() {
 
-    demo1().then(res => {
-      console.log("ok")
-    })
+
 
     getPeriod().then(res => {
       this.min = res.data[0]
@@ -126,6 +126,12 @@ export default {
   },mounted() {
   },
   methods: {
+
+    start() {
+      demo1().then(res => {
+        console.log("ok")
+      })
+    }
 
   }
 }
