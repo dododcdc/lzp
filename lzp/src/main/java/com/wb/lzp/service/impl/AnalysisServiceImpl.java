@@ -90,7 +90,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Override
     public List<SeriesData> cmTop() {
 
-        String sql = "select screen_name as name ,count(1) as value from lzp_data group by screen_name order by count(1) desc";
+        String sql = "select screen_name as name ,count(1) as value from lzp_data group by screen_name order by count(1) desc limit 10";
 
         List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
 

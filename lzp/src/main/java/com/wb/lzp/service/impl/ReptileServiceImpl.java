@@ -3,6 +3,7 @@ package com.wb.lzp.service.impl;
 import com.ejlchina.data.Array;
 import com.ejlchina.data.Mapper;
 import com.ejlchina.okhttps.HTTP;
+import com.ejlchina.okhttps.SHttpTask;
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
 import com.wb.lzp.bean.LzpData;
 import com.wb.lzp.config.HttpConfig;

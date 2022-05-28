@@ -18,6 +18,7 @@
   <br /><br /><br /><br /><br />
   </el-row>
 
+<!--  地区人数统计-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
@@ -28,7 +29,7 @@
 
   </el-row>
 
-
+<!--铁粉-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
@@ -39,6 +40,18 @@
 
   </el-row>
 
+<!--  评论数前十-->
+  <el-row>
+    <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
+    <el-col :span="12"><div class="grid-content bg-purple" />
+      <CmTop />
+    </el-col>
+
+    <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
+
+  </el-row>
+
+<!--  男女占比-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
@@ -49,6 +62,7 @@
 
   </el-row>
 
+<!--  在一起统计-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
@@ -98,6 +112,7 @@ import RegNums from "@/components/RegNums";
 import TfNums from "@/components/TfNums";
 import FmProportion from "@/components/FmProportion";
 import Together from "@/components/Together";
+import CmTop from "@/components/CmTop";
 
 import {getPeriod} from "@/api/analysis";
 import { get,demo1 } from "@/api/demo";
@@ -105,7 +120,7 @@ import { get,demo1 } from "@/api/demo";
 export default {
   name: "Analysis",
   components: {
-    RegNums,TfNums,FmProportion,Together
+    RegNums,TfNums,FmProportion,Together,CmTop
   },
   data() {
     return {

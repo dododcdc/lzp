@@ -23,7 +23,6 @@ export default {
     initChart() {
       var chart = echarts.init(document.getElementById('fm'))
       fmProportion().then(res => {
-        console.log(res.data)
         var option = {
           // backgroundColor: '#2c343c',
           // color:['#45C2E0', '#C1EBDD', '#FFC851','#5A5476','#1869A0','#FF9393'],

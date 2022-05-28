@@ -35,3 +35,11 @@ export function getPeriod() {
         method: 'get'
     })
 }
+
+export function cmTop() {
+
+    return request({
+        url:'lzp/cm-top',
+        method: 'get'
+    })
+}

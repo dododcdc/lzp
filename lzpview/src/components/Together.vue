@@ -97,8 +97,6 @@ export default {
           const p2 = sd[i].value.split("||")[0].split("332067")[1]
           const p3 = sd[i].value.split("||")[1].split("332067")[0]
           const p4 = sd[i].value.split("||")[1].split("332067")[1]
-          console.log(p1,p2)
-          console.log(p3,p4)
 
           list.push({
             "area":area,
@@ -109,10 +107,7 @@ export default {
           })
 
         }
-
-        console.log(list)
         this.list = list
-
 
       })
 
