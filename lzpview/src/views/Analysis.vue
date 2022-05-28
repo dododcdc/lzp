@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <el-button type="primary" @click="start()" v-if="false">start</el-button>
+  <el-button type="primary" @click="start()" v-if="true">start</el-button>
 
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -14,6 +14,7 @@
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
   <br /><br /><br /><br /><br />
   </el-row>
+  <div  style="height: 20px"></div>
 
 <!--  地区人数统计-->
   <el-row>
@@ -25,7 +26,7 @@
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
 
   </el-row>
-
+  <div  style="height: 20px"></div>
 <!--铁粉-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -36,7 +37,7 @@
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
 
   </el-row>
-
+  <div  style="height: 20px"></div>
 <!--  评论数前十-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -47,7 +48,7 @@
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
 
   </el-row>
-
+  <div  style="height: 20px"></div>
 <!--  男女占比-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -58,7 +59,7 @@
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
 
   </el-row>
-
+  <div  style="height: 20px"></div>
 <!--  在一起统计-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
@@ -70,9 +71,7 @@
 
   </el-row>
 
-  <div style="height: 50px">
-
-
+  <div style="height: 40px">
 
   </div>
   <el-row>

@@ -23,7 +23,9 @@ public class DemoController {
 
     @GetMapping("demo1")
     public String demo1() {
-        reptileService.start("0");
+        String sinceId = "4774130194318809";
+//        String sinceId = "0";
+        reptileService.start(sinceId);
         return "dddd";
     }
 

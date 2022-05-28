@@ -44,7 +44,6 @@ public class ReptileServiceImpl implements ReptileService {
 
         // todo 睡眠时间改在拦截器中执行
 
-
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
 
         Mapper m1 = this.http.sync(urlRes)
