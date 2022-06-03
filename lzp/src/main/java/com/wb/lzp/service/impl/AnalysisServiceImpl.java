@@ -1,6 +1,8 @@
 package com.wb.lzp.service.impl;
 
+import com.wb.lzp.bean.Page;
 import com.wb.lzp.bean.vo.SeriesData;
+import com.wb.lzp.bean.vo.TogetherVo;
 import com.wb.lzp.service.AnalysisService;
 import com.wb.lzp.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,18 +10,20 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class AnalysisServiceImpl implements AnalysisService {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+
+
     @Override
     public List<SeriesData> regNums() {
 
@@ -77,6 +81,45 @@ public class AnalysisServiceImpl implements AnalysisService {
         return data;
     }
 
+
+    @Override
+    public List<SeriesData> cmTop() {
+
+        String sql = "select screen_name as name ,count(1) as value from lzp_data where cmu_id <> '6027016891' group by screen_name order by count(1) desc limit 10";
+
+        List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
+
+        return data.stream()
+                .sorted(Comparator.comparingInt(x -> Integer.parseInt(x.getValue())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<TogetherVo> togCm(Integer currentPage) {
+
+        String sql = "SELECT text as name\n" +
+                "     ,substring_index(group_concat(cmu_id),',',1) as cmuId1\n" +
+                "     ,substring_index(group_concat(screen_name),',',1) as cmName1\n" +
+                "     ,substring_index(group_concat(avatar),',',1) as avatar1\n" +
+                "     ,substring_index(group_concat(profile_url),',',1) as url1\n" +
+                "     ,substring_index(group_concat(cmu_id),',',-1) as cmu_id2\n" +
+                "     ,substring_index(group_concat(screen_name),',',-1) as cmName2\n" +
+                "     ,substring_index(group_concat(avatar),',',-1) as avatar2\n" +
+                "     ,substring_index(group_concat(profile_url),',',-1) as url2\n" +
+                "FROM (\n" +
+                "         SELECT text,gender,profile_url,screen_name,avatar,cmu_id FROM LZP_DATA group by text,profile_url,gender,screen_name,avatar,cmu_id) A\n" +
+                "GROUP BY text HAVING COUNT(*) = 2\n" +
+                "                 and count(distinct gender) = 2";
+        List<TogetherVo> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(TogetherVo.class));
+        // 默认每页五条
+        Page<TogetherVo> page = new Page<>(currentPage, 5, data.size(), null);
+
+        page.setData(data.subList(page.getSt(),page.getEt()));
+
+        return page;
+    }
+
+
     @Override
     public List<String> getPeriod() throws Exception {
 
@@ -88,16 +131,6 @@ public class AnalysisServiceImpl implements AnalysisService {
         return Arrays.asList(min,max);
     }
 
-    @Override
-    public List<SeriesData> cmTop() {
 
-        String sql = "select screen_name as name ,count(1) as value from lzp_data group by screen_name order by count(1) desc limit 10";
-
-        List<SeriesData> data = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SeriesData.class));
-
-        return data.stream()
-                .sorted(Comparator.comparingInt(x -> Integer.parseInt(x.getValue())))
-                .collect(Collectors.toList());
-    }
 
 }

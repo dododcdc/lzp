@@ -39,6 +39,9 @@ public class ReptileServiceImpl implements ReptileService {
 
     private int totalCm = 0;
 
+    //每访问十次接口就休息一分钟
+    private int apiCount = 0;
+
     @Override
     public void start(String sinceId) {
 
@@ -51,6 +54,7 @@ public class ReptileServiceImpl implements ReptileService {
                 .get()
                 .getBody()
                 .toMapper();
+        this.apiCount++;
         // 爬到所有数据后返回
         int ok = m1.getInt("ok");
         if (ok != 1) {
@@ -102,10 +106,19 @@ public class ReptileServiceImpl implements ReptileService {
             sleep();
             log.info("本次微博接口的url为：{}", this.baseUrl + this.urlRes);
             log.info("本次获取评论的url为：{}", this.baseUrl + url);
+
+            // 每调用12次接口休息一分钟
+            if (this.apiCount>10) {
+                log.info("已经连续调用了{}次接口，休息一分钟后将继续",this.apiCount);
+                sleep(60000);
+                this.apiCount = 0;
+            }
             Mapper comments = http.sync(url)
                     .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
                     .get()
                     .getBody().toMapper();
+
+            this.apiCount ++;
 
             int ok = comments.getInt("ok");
 
@@ -204,6 +217,14 @@ public class ReptileServiceImpl implements ReptileService {
             }
         }
 
+    }
+
+    private void sleep(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sleep() {

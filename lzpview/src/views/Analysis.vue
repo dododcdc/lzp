@@ -1,8 +1,11 @@
 <template>
 <div>
 
-  <el-button type="primary" @click="start()" v-if="true">start</el-button>
-
+<!--  <el-button type="primary" @click="start()" v-if="true">start</el-button>-->
+  <el-button type="primary" @click="playMusic()" v-if="true">play</el-button>
+    <audio  controls loop ref="audio-player" style="display: none">
+      <source src="https://goodbin.cn/music/xx.mp3" />
+    </audio>
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
@@ -27,16 +30,17 @@
 
   </el-row>
   <div  style="height: 20px"></div>
-<!--铁粉-->
+  <!--  男女占比-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
-      <TfNums />
+      <FmProportion />
     </el-col>
 
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
 
   </el-row>
+
   <div  style="height: 20px"></div>
 <!--  评论数前十-->
   <el-row>
@@ -49,27 +53,37 @@
 
   </el-row>
   <div  style="height: 20px"></div>
-<!--  男女占比-->
+  <!--铁粉-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
     <el-col :span="12"><div class="grid-content bg-purple" />
-      <FmProportion />
+      <TfNums />
     </el-col>
 
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
-
   </el-row>
   <div  style="height: 20px"></div>
-<!--  在一起统计-->
   <el-row>
-    <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
-    <el-col :span="12"><div class="grid-content bg-purple" />
-      <Together />
+    <el-col :span="6">
+
     </el-col>
+    <el-col :span="12">
+      <TgCm />
+    </el-col>
+    <el-col :span="6">
 
-    <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
-
+    </el-col>
   </el-row>
+<!--  在一起统计-->
+<!--  <el-row>-->
+<!--    <el-col :span="6"><div class="grid-content bg-purple" /></el-col>-->
+<!--    <el-col :span="12"><div class="grid-content bg-purple" />-->
+<!--      <Together />-->
+<!--    </el-col>-->
+
+<!--    <el-col :span="6"><div class="grid-content bg-purple" /></el-col>-->
+
+<!--  </el-row>-->
 
   <div style="height: 40px">
 
@@ -77,15 +91,15 @@
   <el-row>
     <el-col :span="8"></el-col>
     <el-col :span="8">
-      <p style="color: aqua">
+      <p style="color: black;text-align: left">
         本次采集评论的时间范围为{{this.min}}至{{this.max}}
       </p>
-      <p>
-        <b style="color: antiquewhite">TODO</b>
+      <p style="text-align: left">
+        <b style="color: deepskyblue">TODO</b>
       </p>
       <ul style="color: lightseagreen;text-align: left">
         <li>地区人员活跃情况</li>
-        <li>发送相同内容的两人，且正好是异性</li>
+        <li>同一地区只有两人且为异性</li>
         <li>哪个时间段评论最多</li>
         <li>哪个地区铁粉最多</li>
         <li>00:00 后评论数量占比</li>
@@ -95,8 +109,6 @@
     </el-col>
     <el-col :span="8"></el-col>
   </el-row>
-
-
 
 
 </div>
@@ -110,31 +122,40 @@ import FmProportion from "@/components/FmProportion";
 import Together from "@/components/Together";
 import CmTop from "@/components/CmTop";
 
+import TgCm from "@/components/TgCm";
+
 import {getPeriod} from "@/api/analysis";
 import { get,demo1 } from "@/api/demo";
 
 export default {
   name: "Analysis",
   components: {
-    RegNums,TfNums,FmProportion,Together,CmTop
+    RegNums,TfNums,FmProportion,Together,CmTop,TgCm
   },
   data() {
     return {
       max:undefined,
-      min:undefined
+      min:undefined,
+      box:undefined
 
     }
   },
+
+  // 在模板渲染成html前调用
   created() {
-
-
 
     getPeriod().then(res => {
       this.min = res.data[0]
       this.max = res.data[1]
     })
 
-  },mounted() {
+
+
+  },
+
+  mounted() {
+    // this.playMusic()
+
   },
   methods: {
 
@@ -142,6 +163,12 @@ export default {
       demo1().then(res => {
         console.log("ok")
       })
+    },
+    playMusic() {
+      this.box = this.$refs["audio-player"];
+      // this.box.pause()
+      this.box.play();
+
     }
 
   }

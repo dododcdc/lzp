@@ -78,7 +78,7 @@ export default {
   mounted() {
   },
   created() {
-    this.init()
+    //this.init()
   },
   methods:{
 
@@ -97,9 +97,8 @@ export default {
           const p2 = sd[i].value.split("||")[0].split("332067")[1]
           const p3 = sd[i].value.split("||")[1].split("332067")[0]
           const p4 = sd[i].value.split("||")[1].split("332067")[1]
-
           list.push({
-            "area":area,
+            "area":area, // 地域
             "p1":p1,
             "p2":p2,
             "p3":p3,
@@ -120,6 +119,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
+
+/*!*最外层透明*!*/
+/*.el-table, .el-table__expanded-cell{*/
+/*  background-color: transparent;*/
+/*}*/
+/*!* 表格内背景颜色 *!*/
+/*.el-table th,*/
+/*.el-table tr,*/
+/*.el-table td {*/
+/*  background-color: #9d4545;*/
+/*}*/
 
 </style>

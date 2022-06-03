@@ -47,6 +47,8 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
+
+
 		<dependency>
 			<groupId>io.github.dododcdc</groupId>
 			<artifactId>wbrepl-spring-boot-starter</artifactId>

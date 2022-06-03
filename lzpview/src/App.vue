@@ -3,8 +3,10 @@
 <!--    <router-link to="/">Home</router-link> |-->
 <!--    <router-link to="/about">About</router-link>-->
 <!--  </div>-->
-  <!-- autoplay 自动播放 -->
-  <!-- loop 循环播放 -->
+<!--  <audio src="https://goodbin.cn/music/xx.mp3" autoplay loop>ddd</audio>-->
+<!--  <audio  controls muted ref="audio-player" id="ad">-->
+<!--    <source src="https://goodbin.cn/music/xx.mp3" />-->
+<!--  </audio>-->
   <router-view/>
 </template>
 

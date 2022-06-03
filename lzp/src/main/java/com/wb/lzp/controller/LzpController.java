@@ -1,12 +1,11 @@
 package com.wb.lzp.controller;
 
+import com.wb.lzp.bean.Page;
 import com.wb.lzp.bean.vo.SeriesData;
+import com.wb.lzp.bean.vo.TogetherVo;
 import com.wb.lzp.service.AnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -71,6 +70,19 @@ public class LzpController {
     public List<SeriesData> cmTop() {
         List<SeriesData> data = analysisService.cmTop();
         return data;
+    }
+
+    /**
+     * 同一条评论恰好只有两个人发且为异性
+     * @return
+     */
+    @GetMapping("tg-cm/{currentPage}")
+    public Page<TogetherVo> tgCm(@PathVariable("currentPage") Integer currentPage) {
+
+        Page<TogetherVo> togetherVos = analysisService.togCm(currentPage);
+
+        return togetherVos;
+
     }
 
 

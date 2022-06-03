@@ -43,3 +43,11 @@ export function cmTop() {
         method: 'get'
     })
 }
+
+export function tgCm(currentPage) {
+    const url = 'lzp/tg-cm' + "/" + currentPage
+    return request({
+        url: url,
+        method: 'get',
+    })
+}

@@ -22,13 +22,13 @@ export default {
   methods: {
     initChart() {
 
-      var chart = echarts.init(document.getElementById('cm-tom'))
+      var chart = echarts.init(document.getElementById('cm-tom'),'dark')
 
       cmTop().then(res => {
 
         var option = {
           title: {
-            text: '评论贡献统计'
+            text: '评论条数前十名'
           },
           tooltip: {
             trigger: 'axis',
@@ -74,12 +74,10 @@ export default {
         };
 
         for(var i in res.data) {
-          console.log(res.data[i].name,res.data[i].value)
           option.yAxis.data.push(res.data[i].name)
           option.series[0].data.push(res.data[i].value)
 
         }
-        console.log(option)
         chart.setOption(option)
 
       })

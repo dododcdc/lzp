@@ -43,7 +43,7 @@ export default {
             orient: 'vertical',
             left: 'left',
             textStyle: {
-              color:'#FFFF00'
+              color:'#111110'
             }
           },
           series: [

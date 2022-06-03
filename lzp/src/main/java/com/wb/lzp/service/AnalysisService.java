@@ -1,6 +1,8 @@
 package com.wb.lzp.service;
 
+import com.wb.lzp.bean.Page;
 import com.wb.lzp.bean.vo.SeriesData;
+import com.wb.lzp.bean.vo.TogetherVo;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -49,6 +51,14 @@ public interface AnalysisService {
      * @return
      */
     List<SeriesData> cmTop() ;
+
+    /**
+     * 一条评论恰好有两个人发，且为异性
+     * @return
+     */
+    Page<TogetherVo> togCm(Integer currentPage);
+
+
 
 
 }
