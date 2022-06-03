@@ -22,7 +22,7 @@ export default {
   methods: {
     initChart() {
 
-      var chart = echarts.init(document.getElementById('cm-tom'),'dark')
+      var chart = echarts.init(document.getElementById('cm-tom'))
 
       cmTop().then(res => {
 

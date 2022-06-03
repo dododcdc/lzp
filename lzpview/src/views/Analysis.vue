@@ -45,18 +45,18 @@
 <!--  评论数前十-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
-    <el-col :span="12"><div class="grid-content bg-purple" />
+    <el-col :span="12" ><div class="grid-content bg-purple" />
       <CmTop />
     </el-col>
 
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
 
   </el-row>
-  <div  style="height: 20px"></div>
+  <div  style="height: 150px"></div>
   <!--铁粉-->
   <el-row>
     <el-col :span="6"><div class="grid-content bg-purple" /></el-col>
-    <el-col :span="12"><div class="grid-content bg-purple" />
+    <el-col :span="12" ><div class="grid-content bg-purple" />
       <TfNums />
     </el-col>
 
@@ -67,7 +67,7 @@
     <el-col :span="6">
 
     </el-col>
-    <el-col :span="12">
+    <el-col :span="12" >
       <TgCm />
     </el-col>
     <el-col :span="6">
@@ -100,12 +100,10 @@
         <b style="color: deepskyblue">TODO</b>
       </p>
       <ul style="color: lightseagreen;text-align: left">
-        <li>地区人员活跃情况</li>
+
         <li>同一地区只有两人且为异性</li>
         <li>哪个时间段评论最多</li>
-        <li>哪个地区铁粉最多</li>
-        <li>00:00 后评论数量占比</li>
-        <li>00:00后发布评论次数统计前十名</li>
+        <li>铁粉最多的地区前十名</li>
         <li>搜索某个用户在评论区都@了哪些人，每个@了多少次</li>
 
       </ul>

@@ -15,7 +15,6 @@
 
 
     <el-row>
-
       <el-col >
         <el-table :data="page.data"
                   table-layout="fixed"
