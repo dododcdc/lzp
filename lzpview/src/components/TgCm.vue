@@ -32,10 +32,21 @@
 
           </el-table-column>
           <el-table-column prop="cmName1" label="人"  >
+            <template #default="scope">
+<!--              <img :src="scope.row.avatar1" width="40px" height="40px" />-->
+              <el-avatar :size="100" :src="scope.row.avatar1" />
+              <a :href="scope.row.url1">{{scope.row.cmName1}}</a>
 
+            </template>
 
           </el-table-column>
-          <el-table-column prop="cmName2" label="人" />
+          <el-table-column prop="cmName2" label="人" >
+            <template #default="scope">
+              <!--              <img :src="scope.row.avatar1" width="40px" height="40px" />-->
+              <el-avatar :size="100" :src="scope.row.avatar2" />
+              <a :href="scope.row.url2">{{scope.row.cmName2}}</a>
+            </template>
+          </el-table-column>
         </el-table>
       </el-col>
     </el-row>
