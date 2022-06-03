@@ -15,7 +15,8 @@
 
 
     <el-row>
-      <el-col>
+
+      <el-col >
         <el-table :data="page.data"
                   table-layout="fixed"
                   style="width: 100%">
@@ -48,7 +49,21 @@
             </template>
           </el-table-column>
         </el-table>
+
       </el-col>
+    </el-row>
+    <el-row >
+      <el-col :span="7"></el-col>
+      <el-col :span="10" >
+        <el-pagination layout="prev, pager, next"
+
+                       :page-size="page.pageSize"
+                       :current-page="page.currentPage"
+                       @update:current-page="get"
+
+                       :total="page.totalRow" />
+      </el-col>
+      <el-col :span="7"></el-col>
     </el-row>
   </div>
 
@@ -72,14 +87,13 @@ export default {
     }
   },
   mounted() {
-    this.get(2)
+    this.get(1)
   },
   methods:{
 
     get(currentPage) {
       tgCm(currentPage).then(res => {
         this.page.data = res.data.data
-        console.log(this.page.data)
         this.page.currentPage = res.data.currentPage
         this.page.pageSize = res.data.pageSize
         this.page.totalRow = res.data.totalRow

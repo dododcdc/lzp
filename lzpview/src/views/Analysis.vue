@@ -94,7 +94,8 @@
       <p style="color: black;text-align: left">
         本次采集评论的时间范围为{{this.min}}至{{this.max}}
       </p>
-      <p>本分析不具有完整性(数据有遗漏的情况)、不具备一致性(性别、名字等的变化)</p>
+      <p style="color: black;text-align: left"
+      >本分析不具有完整性(数据有遗漏的情况)、不具备一致性(性别、名字等的变化)</p>
       <p style="text-align: left">
         <b style="color: deepskyblue">TODO</b>
       </p>
