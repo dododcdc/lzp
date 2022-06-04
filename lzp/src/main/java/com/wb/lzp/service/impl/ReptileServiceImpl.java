@@ -9,6 +9,7 @@ import com.wb.lzp.bean.LzpData;
 import com.wb.lzp.config.HttpConfig;
 import com.wb.lzp.service.LzpDataRepository;
 import com.wb.lzp.service.ReptileService;
+import com.wb.lzp.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -191,8 +192,8 @@ public class ReptileServiceImpl implements ReptileService {
                     .wText(wText)
                     .wUrl(wUrl)
                     .wApiUrl(this.baseUrl+this.urlRes) // 不准，相对评论要准一些，微博发布不会那么频繁，不会那么快变到另一个接口去了，程序挂了根据这个的since_id 恢复继续爬
-                    .cmTime(mapper.getString("created_at"))
-                    .wTime(wTime)
+                    .cmTime(TimeUtil.formate(mapper.getString("created_at")))
+                    .wTime(TimeUtil.formate(wTime) )
                     .build();
 //          根据评论id判断该条数据是否已经爬取过
             List<LzpData> lp = lzpDataRepository.findByCmId(lzpData.getCmId());

@@ -1,7 +1,7 @@
 <template>
 <div>
 
-<!--  <el-button type="primary" @click="start()" v-if="true">start</el-button>-->
+  <el-button type="primary" @click="start()" v-if="true">start</el-button>
   <el-button type="primary" @click="playMusic()" v-if="true">play</el-button>
     <audio  controls loop ref="audio-player" style="display: none">
       <source src="https://goodbin.cn/music/xx.mp3" />

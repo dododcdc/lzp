@@ -125,9 +125,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 
         String sql = "select cm_time from lzp_data";
         List<String> period = jdbcTemplate.queryForList(sql,String.class);
-        List<String> collect = period.stream().map(TimeUtil::formate).collect(Collectors.toList());
-        String max = Collections.max(collect);
-        String min = Collections.min(collect);
+        String max = Collections.max(period);
+        String min = Collections.min(period);
         return Arrays.asList(min,max);
     }
 
