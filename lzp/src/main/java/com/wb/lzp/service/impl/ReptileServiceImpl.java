@@ -68,7 +68,7 @@ public class ReptileServiceImpl implements ReptileService {
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
             if (m4 == null) continue;
-            // 该条微博地址
+            // 将微博内容也爬取到数据库
             String scheme = m3.getString("scheme");
             String id = m4.getString("id");
             String mid = m4.getString("mid");

@@ -6,11 +6,13 @@
 api1 https://m.weibo.cn/api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891
 经调试发现 参数保留q  type  value 就可以了
 api1 https://m.weibo.cn/api/container/getIndex?q=糊挤小鸡&type=uid&value=1573568291
-
+新api1 https://weibo.com/ajax/statuses/mymblog?uid=6027016891&page=1&feature=0
 通过api1 返回的cards 拿到所有的 id mid
-
+4777358625866678kp2
 api2 https://m.weibo.cn/comments/hotflow?id=4769148612380419&mid=4769148612380419&max_id_type=0
 api2 https://m.weibo.cn/comments/hotflow?id=4774451877776374&mid=4774451877776374&max_id_type=0
+新api2  https://weibo.com/ajax/statuses/buildComments?is_reload=1&id=4777526096822593&is_show_bulletin=2&is_mix=0&count=20&type=feed&uid=6027016891
+       https://weibo.com/ajax/statuses/buildComments?flow=0&is_reload=1&id=4777521479156388&is_show_bulletin=2&is_mix=0&count=10&uid=6027016891
 id mid 拼接d到api2上访问  拿到所有评论
 
 
