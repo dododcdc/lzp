@@ -53,12 +53,21 @@ public class Config {
                             Response rsp = chain.proceed(chain.request());
                             String str = rsp.body().string();
 //                            判断str是json还是html 如果是html 且只重试不超过三次 就休息 一小时 再去爬
-                            if (true) {
+                            if (str.startsWith("{") && str.endsWith("}")) {
+
+                                return rsp;
+
+                            }else {
+                                if (times>3) return rsp;
+                                System.out.println("接收到非json重试" + times + "次");
                                 rsp.close();
                                 times++;
-                                continue;
+                                try {
+                                    Thread.sleep(3600000);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
-                            return rsp;
                         }
                     });
 
