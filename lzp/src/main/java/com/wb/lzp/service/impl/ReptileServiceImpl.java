@@ -55,6 +55,8 @@ public class ReptileServiceImpl implements ReptileService {
                 .get()
                 .getBody()
                 .toMapper();
+
+
         this.apiCount++;
         // 爬到所有数据后返回
         int ok = m1.getInt("ok");
@@ -64,7 +66,7 @@ public class ReptileServiceImpl implements ReptileService {
         Mapper m2 = m1.getMapper("data");
         Array cards = m2.getArray("cards");
 
-        for (int i = 1; i < cards.size(); i++) { // i从1开始 第一条微博不爬取 (是置顶广告)
+        for (int i = 2; i < cards.size(); i++) { // i从1开始 第一条微博不爬取 (是置顶广告)
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
             if (m4 == null) continue;
