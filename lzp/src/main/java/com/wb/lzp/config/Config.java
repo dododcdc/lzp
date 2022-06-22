@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import static okio.Okio.buffer;
 
@@ -31,6 +32,24 @@ public class Config {
         // todo 配置超时重试机制
         HTTP.Builder builder = HTTP.builder();
         builder.config(b -> {
+
+            b.addInterceptor(chain -> {
+                int times = 0;
+                while(true) {
+                    try {
+                        return chain.proceed(chain.request());
+                    } catch (UnknownHostException e) {
+                        if (times > 3) {
+                            throw e;
+                        }
+                        try {
+                            Thread.sleep(3600000);
+                        } catch (InterruptedException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                }
+            });
 
 
             // 配置超时重试
