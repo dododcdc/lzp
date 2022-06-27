@@ -12,6 +12,7 @@ import com.wb.lzp.service.ReptileService;
 import com.wb.lzp.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,8 @@ public class ReptileServiceImpl implements ReptileService {
     LzpDataRepository lzpDataRepository;
 
     private final String baseUrl = "https://m.weibo.cn/";
-    private final String urlFirst = "api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891";
+    @Value("${lzp.urlFirst}")
+    private  String urlFirst ;
     private String urlRes = "";
     @Autowired
     private HTTP http;

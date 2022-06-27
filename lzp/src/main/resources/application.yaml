@@ -3,6 +3,7 @@ server:
 
 lzp:
   baseUrl: https://m.weibo.cn/
+  urlFirst: api/container/getIndex?uid=6027016891&t=0&luicode=10000011&lfid=100103type=1&q=李壮平&type=uid&value=6027016891&containerid=1076036027016891
   header: "{cookie: '设置你自己的cookie'}"
 
 spring:
