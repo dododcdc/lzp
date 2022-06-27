@@ -7,6 +7,7 @@ import com.ejlchina.okhttps.SHttpTask;
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
 import com.wb.lzp.bean.LzpData;
 import com.wb.lzp.config.HttpConfig;
+import com.wb.lzp.config.LzpHttpConfig;
 import com.wb.lzp.service.LzpDataRepository;
 import com.wb.lzp.service.ReptileService;
 import com.wb.lzp.util.TimeUtil;
@@ -25,12 +26,16 @@ import java.util.Random;
 public class ReptileServiceImpl implements ReptileService {
 
     @Autowired
+    LzpHttpConfig lzpHttpConfig;
+
+    @Autowired
     LzpDataRepository lzpDataRepository;
 
     private final String baseUrl = "https://m.weibo.cn/";
     @Value("${lzp.urlFirst}")
     private  String urlFirst ;
     private String urlRes = "";
+
     @Autowired
     private HTTP http;
 
@@ -51,9 +56,9 @@ public class ReptileServiceImpl implements ReptileService {
         // todo 睡眠时间改在拦截器中执行
 
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
-
+        
         Mapper m1 = this.http.sync(urlRes)
-                .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
+                .addHeader(lzpHttpConfig.getHeader())
                 .get()
                 .getBody()
                 .toMapper();

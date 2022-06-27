@@ -20,4 +20,9 @@ public class LzpHttpConfig {
     }
 
 
+    public Map getHeader() {
+        return this.header;
+    }
+
+
 }
