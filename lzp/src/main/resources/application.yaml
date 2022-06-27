@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+lzp:
+  baseUrl: https://m.weibo.cn/
+  header: "{cookie: '设置你自己的cookie'}"
+
+spring:
+#  数据源
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db01?useSSL=false
+    username: root
+    password: 1111
+#表不存在就创建
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#远程调试
+wbrepl:
+  host: 127.0.0.1
+  port: 55555
+  enabled: true

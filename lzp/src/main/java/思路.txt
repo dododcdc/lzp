@@ -15,7 +15,6 @@ api2 https://m.weibo.cn/comments/hotflow?id=4774451877776374&mid=477445187777637
        https://weibo.com/ajax/statuses/buildComments?flow=0&is_reload=1&id=4777521479156388&is_show_bulletin=2&is_mix=0&count=10&uid=6027016891
 id mid 拼接d到api2上访问  拿到所有评论
 
-
 // 登录接口 https://passport.weibo.cn/sso/login
 // post
 // 参数
@@ -84,7 +83,7 @@ hfp:
 // 00：00 后最活跃的男/女
 // 贡献评论最多的前十人
 
-git clone https://dcdc3166%40foxmail.com:cm97ei6p@github.com/dododcdc/jinxi.git
+// todo 使用websocket将日志提供给界面
 
 
 
