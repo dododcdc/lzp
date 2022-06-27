@@ -3,23 +3,16 @@ package com.wb.lzp.config;
 
 import com.ejlchina.okhttps.HTTP;
 import com.ejlchina.okhttps.gson.GsonMsgConvertor;
-import okhttp3.Cache;
 import okhttp3.MediaType;
 import okhttp3.Response;
-import static java.util.Objects.requireNonNull;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
-import okio.BufferedSource;
-import okio.GzipSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.File;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-
-import static okio.Okio.buffer;
 
 @Configuration
 public class Config {
