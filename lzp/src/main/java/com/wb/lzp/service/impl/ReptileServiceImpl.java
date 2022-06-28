@@ -47,7 +47,7 @@ public class ReptileServiceImpl implements ReptileService {
 
     private int totalCm = 0;
 
-    //每访问十次接口就休息一分钟
+    //记录接口访问次数
     private int apiCount = 0;
 
     @Override
@@ -56,7 +56,7 @@ public class ReptileServiceImpl implements ReptileService {
         // todo 睡眠时间改在拦截器中执行
 
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
-        
+        // 获取本批次微博
         Mapper m1 = this.http.sync(urlRes)
                 .addHeader(lzpHttpConfig.getHeader())
                 .get()
@@ -73,7 +73,8 @@ public class ReptileServiceImpl implements ReptileService {
         Mapper m2 = m1.getMapper("data");
         Array cards = m2.getArray("cards");
 
-        for (int i = 2; i < cards.size(); i++) { // i从1开始 第一条微博不爬取 (是置顶广告)
+        // 对本批次的微博进行遍历
+        for (int i = wNow==0?2:0; i < cards.size(); i++) { // i从2开始 前2条微博不爬取 (是置顶广告) todo 放到配置文件配置
             Mapper m3 = cards.getMapper(i);
             Mapper m4 = m3.getMapper("mblog");
             if (m4 == null) continue;
@@ -95,7 +96,7 @@ public class ReptileServiceImpl implements ReptileService {
 
         sinceId = m2.getMapper("cardlistInfo").getString("since_id");
         if (wNow < 10000) {
-
+            //如果还有下一个批次，继续递归获取微博
             start(sinceId);
         } else return;
 
@@ -124,7 +125,7 @@ public class ReptileServiceImpl implements ReptileService {
                 this.apiCount = 0;
             }
             Mapper comments = http.sync(url)
-                    .addHeader(HttpConfig.headers.get(new Random().nextInt(3)))
+                    .addHeader(lzpHttpConfig.getHeader())
                     .get()
                     .getBody().toMapper();
 

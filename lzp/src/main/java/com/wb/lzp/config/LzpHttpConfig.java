@@ -9,14 +9,12 @@ import java.util.Map;
 @Configuration
 public class LzpHttpConfig {
 
-
     @Value("#{${lzp.header}}")
     private Map<String,String> header;
 
 
-
     public String test(){
-        return this.header.get("cookie");
+        return this.header.get("Cookie");
     }
 
 

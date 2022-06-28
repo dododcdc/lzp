@@ -22,6 +22,7 @@ public class LzpApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 
+		System.out.println("start");
 		log.info(lzpHttpConfig.test());
 
 
