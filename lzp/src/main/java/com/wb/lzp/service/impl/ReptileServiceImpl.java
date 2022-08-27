@@ -53,7 +53,6 @@ public class ReptileServiceImpl implements ReptileService {
     @Override
     public void start(String sinceId) {
 
-        // todo 睡眠时间改在拦截器中执行
 
         this.urlRes = this.urlFirst + "&since_id=" + sinceId;
         // 获取本批次微博

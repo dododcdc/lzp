@@ -22,10 +22,11 @@ public class Config {
 
     @Bean
     public HTTP http() {
-        // todo 配置超时重试机制
+
         HTTP.Builder builder = HTTP.builder();
         builder.config(b -> {
 
+            // 配置接口睡眠时间
             b.addInterceptor(chain -> {
                 int times = 0;
                 while(true) {
