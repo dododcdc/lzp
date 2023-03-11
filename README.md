@@ -9,6 +9,10 @@
 * 启动后端
 * 启动前端
 
+## 分析结果展示
+
+![](./img/lzpview.png)
+
 ## 贡献者
 
 [dododcdc](https://github.com/dododcdc)
